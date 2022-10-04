@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function CreateJoin({game, setGame}) {
+function CreateJoin({setGame}) {
     const gameTemplate = {
         location: '',
         playLength: '',
@@ -30,9 +30,9 @@ function CreateJoin({game, setGame}) {
     const [location, setLocation] = useState('')
 
     const createGame = () => {
-        let newGame = gameTemplate
-        newGame.location = location
-        setGame(newGame)
+         setGame({...gameTemplate, 
+        location: location
+        })
     }
 
     return (
