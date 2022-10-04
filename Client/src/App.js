@@ -1,8 +1,8 @@
 import './App.css';
+import React, {useState} from 'react'
 import Nav from './Components/Nav'
 import GameArea from './Components/GameArea'
 import Chat from './Components/Chat'
-import ChatBubble from './Components/ChatBubble';
 
 function App() {
   return (

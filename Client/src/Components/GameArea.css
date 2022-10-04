@@ -1,0 +1,11 @@
+
+
+.GameArea {
+    position: absolute;
+    top: 8vh;
+    width: 100vw;
+    height: 92vh;
+    background: linear-gradient(180deg, #FFFFFF 44.8%, rgba(255, 255, 255, 0) 78.81%), url('../images/mountains.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 130%;
+}
