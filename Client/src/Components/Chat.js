@@ -1,14 +1,21 @@
+import './Chat.css'
+import React, {useState} from 'react';
 import ChatBubble from './ChatBubble'
 
 function Chat() {
+  const [chatOpen, setChatOpen] = useState(false);
+  const toggleChat = () => {
+    setChatOpen(!chatOpen)
+  }
+
     return (
-      <div className="chat">
+      <div className={chatOpen ? 'openChat' : 'Chat'}>
+        <button classname="chatToggle" onClick={toggleChat}>{chatOpen ? '-' : '+'}</button>
         <div className="chatLog">
-           <h1>Hi Hi</h1>
-           <ChatBubble />
+            <ChatBubble />
+            <input type='text'>
+            </input>  
         </div>
-        <input type='text'>
-        </input>
       </div>
     );
   }
