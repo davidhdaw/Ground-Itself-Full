@@ -1,10 +1,13 @@
 import './GameArea.css'
+import CreateJoin from './CreateJoin';
+import TimeLength from './TimeLength';
 
-function GameArea() {
+function GameArea({game, setGame}) {
 
     return (
       <div className='GameArea'>
-        All the game logic/phases live in here
+        {game.phase === 0 && <CreateJoin setGame={setGame} />}
+        {game.phase === 1 && <TimeLength game={game} setGame={setGame} />}
       </div>
     );
   }

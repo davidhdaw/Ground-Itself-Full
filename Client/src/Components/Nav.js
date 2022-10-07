@@ -1,12 +1,12 @@
 import './Nav.css'
 
-function Nav() {
+function Nav({game}) {
     return (
       <header className="Nav">
         <div className="gameInfo">
-            <p>Location</p>
-            <p>Length of Time</p>
-            <p>Phase of Play</p>
+            {game.location && <p>Game Location: {game.location}</p>}
+            {game.playLength && <p>Cycle Length: {game.playLength}</p>}
+            {game.phase && <p>Game Phase: {game.phase}</p>}
         </div>
         <div className='userInfo'>
             <p>How to Play</p>

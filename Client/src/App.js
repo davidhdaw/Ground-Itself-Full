@@ -4,11 +4,14 @@ import Nav from './Components/Nav'
 import GameArea from './Components/GameArea'
 import Chat from './Components/Chat'
 
+
 function App() {
+  const [game, setGame] = useState({phase: 0})
+
   return (
     <div className="App">
-      <Nav />
-      <GameArea />
+      <Nav game={game} />
+      <GameArea game={game} setGame={setGame} />
       <Chat />
     </div>
   );
