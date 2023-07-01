@@ -1,20 +1,25 @@
 import { useState } from "react";
 
-function TimeLength({game, setGame}) {
+function TimeLength({game, setGame, socket}) {
     
-    const timeLengths = ["Days", "Weeks", "Years", "Decades", "Centuries", "Millenia"]
+
     
     const[timeLength, setTimeLength] = useState('')
     
     const timeRoll = () => {
-        setTimeLength(timeLengths[Math.floor(Math.random()*6)])
+        socket.emit('generate_time', game.id)
     }
 
+    socket.on('time_update', (time) => {
+      setTimeLength(time)
+    })
+
     const timeConfirmation = () => {
-        setGame({...game,
+        const updated = {...game,
         playLength: timeLength,
         phase: 2
-        })
+        }
+        socket.emit('update_game', updated)
     }
 
     return (

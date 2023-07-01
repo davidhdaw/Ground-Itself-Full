@@ -1,8 +1,8 @@
-function ChatBubble() {
+function ChatBubble({message}) {
     return (
       <div className='chatBubble'>
-        <h3>User Name</h3>
-        <p>Chat message of some kind</p>
+        <h3>{message.user}</h3>
+        <p>{message.message}</p>
       </div>
     );
   }
