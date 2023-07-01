@@ -21,11 +21,6 @@ function Chat({socket, game}) {
   setMessage('')
   }
 
-const testMessage = {
-  user: 'David',
-  message: 'this is a test message'
-  }
-
 
 useEffect(() => {
   socket.on('recieve_message', (data) => {

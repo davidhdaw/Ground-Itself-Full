@@ -1,4 +1,4 @@
-function Focused({game, socket}) {
+function Focused({game, socket, userID}) {
 
     const nextQuestion = () => {
         socket.emit('draw_question', game.id)
@@ -23,7 +23,7 @@ function Focused({game, socket}) {
             <hr></hr>
             <p>You can enter the same Focused situation multiple times.</p>
             
-            <button className="newQuestionBtn" onClick={nextQuestion}>Next Question</button>
+            {game.players[0].userID === userID && <button className="newQuestionBtn" onClick={nextQuestion}>Next Question</button>}
             </div>
     
         

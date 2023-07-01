@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import GameList from "./GameList";
 
-function CreateJoin({setGame, game, socket, games}) {
+function CreateJoin({setGame, socket, games}) {
     const navigate = useNavigate();
     const params = useParams();
 
@@ -63,7 +63,7 @@ function CreateJoin({setGame, game, socket, games}) {
       setForm('join')
     }
 
-    useEffect(() => {
+
       socket.on('game_update', (data) => {
         setGame(data)
         console.log(data)
@@ -71,7 +71,6 @@ function CreateJoin({setGame, game, socket, games}) {
           navigate("/" + data.id)
         }
       })
-    }, [socket, setGame, game, navigate, params.id])
 
     return (
       <div className='CreateJoin'>
@@ -84,7 +83,7 @@ function CreateJoin({setGame, game, socket, games}) {
         {form === 'join' && 
           <GameList games={games} setForm={setForm} />
         }
-        {form === 'joinroom' &&
+        {/* {form === 'joinroom' &&
         <div className='joinform'>
             <p>Enter Game Location:</p>
             <input type='text' 
@@ -104,7 +103,7 @@ function CreateJoin({setGame, game, socket, games}) {
 
         </div>
 
-        }
+        } */}
 
         {form === 'create' && 
         <div className='createForm'>

@@ -8,6 +8,7 @@ const crypto = require('crypto')
 app.use(cors());
 
 let games = {}
+let completedGames = {}
 
 const io = new Server(server, {
     cors: {
@@ -48,31 +49,51 @@ io.on('connection', (socket) => {
         username: socket.username,
         connected: true,
       });
-    console.log('User Connected: ' + socket.username)
     socket.emit('session', {
         sessionID: socket.sessionID,
         userID: socket.userID,
         username: socket.username
     })
     socket.emit('games_list', games)
+    console.log('User Connected ' + socket.username)
+
+    socket.on('disconnecting', () => {
+        console.log(socket.rooms)
+        socket.rooms.forEach(room => {
+            if (games[room]) {
+                const index = games[room].players.findIndex(player => player.userID === socket.userID)
+                games[room].players[index].connected = false
+                io.to(room).emit("game_update", games[room])
+            }
+        })
+    })
 
     socket.on('join_game', (joinForm) => {
       const gameToJoin = games[joinForm.id]
-      console.log('being sent pleas')
-      if (joinForm.password === gameToJoin.password) {
+      const index = gameToJoin.players.findIndex(player => player.userID === socket.userID)
+      console.log(index)
+      if (!games[joinForm.id]) {
+        return new Error("no matching game")
+      }
+      if (games[joinForm.id] && joinForm.password === gameToJoin.password) {
         socket.join(joinForm.id)
-        if (!gameToJoin.players.find(player => player.userID === socket.userID)) {
+        if (index === -1) {
             const playerObject = {
+                connected: true,
                 userID: socket.userID,
                 username: socket.username
             }
             games[joinForm.id].players.push(playerObject)
+        } else if(gameToJoin.players[index].connected === false) {
+            console.log('firing?')
+            gameToJoin.players[index].connected = true
         }
         io.to(joinForm.id).emit("game_update", gameToJoin)
       } else {
         return new Error("password match")
       }
     })
+
 
     socket.on('find_game', (id) => {
         const game = games[id]
@@ -92,6 +113,7 @@ io.on('connection', (socket) => {
        socket.emit('games_list', games)
     })
 
+
     socket.on('draw_establishing', (id) => {
         let thisGame = games[id]
         const randomIndex = [Math.floor(Math.random()*(thisGame.establishingOptions.length))]
@@ -100,6 +122,24 @@ io.on('connection', (socket) => {
         games[id] = thisGame
         io.to(thisGame.id).emit('game_update', thisGame)
     })
+
+    socket.on('reconnect', (id) => {
+        if (games[id]) {
+            const index = games[id].players.findIndex(player => player.userID === socket.userID)
+            games[id].players[index].connected = true
+            socket.join(id)
+        }
+    })
+
+    socket.on('leave_game', (id) => {
+        socket.leave(id)        
+        if (games[id]) {
+            const index = games[id].players.findIndex(player => player.userID === socket.userID)
+            games[id].players[index].connected = false
+        }
+        socket.emit('games_list', games)
+    })
+
 
     socket.on('focused_situation', (id) => {
         let thisGame = games[id]
@@ -130,6 +170,15 @@ io.on('connection', (socket) => {
             }
         }    
         getQuestion()
+        thisGame.players.push(thisGame.players.shift())
+
+        const rollIt = () => {
+            if (!thisGame.players[0].connected) {
+                thisGame.players.push(thisGame.players.shift())
+                rollIt()
+            }
+        }
+        rollIt()
         games[id] = thisGame
         io.to(thisGame.id).emit('game_update', thisGame)
     })
@@ -137,6 +186,24 @@ io.on('connection', (socket) => {
     socket.on('update_game', (gameObject) => {
         games[id] = gameObject
         io.to(gameObject.id).emit('game_update', gameObject)
+    })
+
+    socket.on('end_game', (gameId) => {
+        const endingGame = games[gameId]
+        io.to(gameId).emit('reset')
+        io.in(gameId).disconnectSockets()
+        endingGame.players.forEach(player => {
+            player.connected = false
+        })
+        completedGames[gameId] = endingGame
+        delete games[gameId]
+        //game object is put into complete games
+        //game object is removed from games object
+
+    })
+
+    socket.on('10_phase', (gameID) => {
+        io.to(gameID).emit('phase_10')
     })
 
     socket.on('generate_time', (id) => {
@@ -152,6 +219,7 @@ io.on('connection', (socket) => {
         socket.username = data.roomCreator
         data.players = []
         const playerObject = {
+            connected: true,
             userID: socket.userID,
             username: socket.username
         }

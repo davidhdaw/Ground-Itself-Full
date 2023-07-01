@@ -12,21 +12,19 @@ const sessionID = localStorage.getItem("sessionID");
 const gameID = localStorage.getItem('gameID');
 
 function App() {
-  const navigate = useNavigate();
-  const params = useParams();
   const [game, setGame] = useState({phase: 0})
   const [games, setGames] = useState([])
   const [usernameSelected, setUsernameSelected] = useState(false)
+  const navigate = useNavigate()
 
   socket.on('games_list', (data) => {
-    console.log(data)
     setGames(data)
-    console.log(gameID)
-    if (games[gameID]) {
-      console.log('it is tho')
-      setGame(games[gameID])
-      console.log(game)
-    }
+  })
+
+  socket.on('reset', () => {
+    localStorage.removeItem('gameID')
+    setGame({phase: 0})
+    navigate("/")
   })
 
   socket.on('store_game', ({gameID, password}) => {
@@ -37,6 +35,7 @@ function App() {
   socket.on("session", ({ sessionID, userID, username }) => {
     socket.auth = { sessionID };
     localStorage.setItem("sessionID", sessionID);
+    localStorage.setItem('userID', userID)
     socket.userID = userID;
     socket.username = username;
     console.log(socket.username)
@@ -49,7 +48,13 @@ function App() {
       setUsernameSelected(true);
       socket.auth = { sessionID };
       socket.connect();
+
+      if (gameID) {
+        socket.emit('find_game', gameID)
+        socket.emit('reconnect', gameID)
+      }
     }
+
   }, [])
 
 
@@ -72,12 +77,12 @@ function App() {
 
   return (
     <div className="App">
-      <Nav game={game} />
+      <Nav game={game} socket={socket} setGame={setGame} setUsernameSelected={setUsernameSelected} />
       <Routes>
         <Route
           exact path="/"
           element={
-            <CreateJoin setGame={setGame} game={game} socket={socket} games={games} />
+            <CreateJoin setGame={setGame} socket={socket} games={games} />
           }
         />
         <Route

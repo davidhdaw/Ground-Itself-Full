@@ -8,7 +8,7 @@ import TenAlert from './TenAlert';
 import Focused from './Focused';
 import EndGame from './EndGame';
 
-function GameArea({game, setGame, socket, games}) {
+function GameArea({game, setGame, socket}) {
 
   let params = useParams();
 
@@ -23,11 +23,6 @@ function GameArea({game, setGame, socket, games}) {
     } 
     socket.emit('join_game', joinForm)
   }
-
-  useEffect(() => {
-    console.log('poing')
-    socket.emit('find_game', params.id)
-  }, [params.id, socket])
 
   // socket.on('identified_game', (data) => {
   //   console.log(data)
