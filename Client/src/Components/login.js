@@ -1,29 +1,37 @@
-import { useState } from "react";
+import { useState } from "react"
 
-function Login({socket, setUsernameSelected}) {
+// ** Styles
+import "./styles/LoginStyles.scss"
 
-    const [username, setUsername] = useState('')
+function Login({ socket, setUsernameSelected }) {
+  const [username, setUsername] = useState("")
 
-    const connect = () => {
-        setUsernameSelected(true)
-        socket.auth = { username };
-        socket.connect()
-    }
-    
-        return (
-          <div className='Login'>
-            <h2>Username:</h2>
-            <input type='text' 
-            className='usernameInput' 
+  const connect = () => {
+    setUsernameSelected(true)
+    socket.auth = { username }
+    socket.connect()
+  }
+
+  return (
+    <section className="login">
+      <h1 className="title">The Ground Itself</h1>
+      <div className="inputFormContainer">
+        <h2 className="usernameInputTitle">Username:</h2>
+        <div className="inputForm">
+          <input
+            type="text"
+            className="usernameInput"
             value={username}
-            placeholder="Your username..."
-            onChange={e => setUsername(e.target.value)}
-            ></input>
-            <button className="connectBtn" onClick={connect}>Join</button>
-            </div>
-    
-        
-        );
-      }
-    
-    export default Login
+            placeholder="Enter username..."
+            onChange={(e) => setUsername(e.target.value)}
+          ></input>
+          <button className="connectBtn" onClick={connect}>
+            Join
+          </button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Login
