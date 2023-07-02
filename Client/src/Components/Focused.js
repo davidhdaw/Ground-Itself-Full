@@ -1,4 +1,5 @@
-function Focused({game, socket, userID}) {
+function Focused({game, socket}) {
+    const userID = localStorage.getItem('userID');
 
     const nextQuestion = () => {
         socket.emit('draw_question', game.id)
