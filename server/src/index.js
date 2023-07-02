@@ -63,6 +63,13 @@ io.on('connection', (socket) => {
             if (games[room]) {
                 const index = games[room].players.findIndex(player => player.userID === socket.userID)
                 games[room].players[index].connected = false
+                const rollIt = () => {
+                    if (!games[room].players[0].connected) {
+                        games[room].players.push(games[room].players.shift())
+                        rollIt()
+                    }
+                }
+                rollIt()
                 io.to(room).emit("game_update", games[room])
             }
         })
@@ -136,6 +143,13 @@ io.on('connection', (socket) => {
         if (games[id]) {
             const index = games[id].players.findIndex(player => player.userID === socket.userID)
             games[id].players[index].connected = false
+            const rollIt = () => {
+                if (!games[id].players[0].connected) {
+                    games[id].players.push(games[id].players.shift())
+                    rollIt()
+                }
+            }
+            rollIt()
         }
         socket.emit('games_list', games)
     })
