@@ -76,7 +76,7 @@ function CreateJoin({setGame, socket, games}) {
       <div className='CreateJoin'>
         {form === 'choosing' && 
         <div className='choosingForm'>
-            <button onClick={gameCheck}>Join Existing Game</button> 
+            {Object.keys(games).length !== 0 && <button onClick={gameCheck}>Join Existing Game</button>}
             <button onClick={() => setForm('create')}>Create New Game</button>
         </div>
         }

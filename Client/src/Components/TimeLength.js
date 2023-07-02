@@ -7,12 +7,18 @@ function TimeLength({game, setGame, socket}) {
     const[timeLength, setTimeLength] = useState('')
     
     const timeRoll = () => {
-        socket.emit('generate_time', game.id)
+        const timeObject = {
+          timeLength: timeLength || '',
+          gameID: game.id
+        }
+        socket.emit('new_time', timeObject)
     }
 
-    socket.on('time_update', (time) => {
-      setTimeLength(time)
-    })
+    socket.on('get_new_time', (time) => {
+        console.log('huh?')
+        setTimeLength(time)
+      }
+    )
 
     const timeConfirmation = () => {
         const updated = {...game,

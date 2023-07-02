@@ -104,7 +104,9 @@ io.on('connection', (socket) => {
 
     socket.on('find_game', (id) => {
         const game = games[id]
-        socket.emit('game_update', game)
+        if (game) {
+            socket.emit('game_update', game)
+        }
     })
 
     socket.on('send_message', (data) => {
@@ -143,13 +145,15 @@ io.on('connection', (socket) => {
         if (games[id]) {
             const index = games[id].players.findIndex(player => player.userID === socket.userID)
             games[id].players[index].connected = false
-            const rollIt = () => {
-                if (!games[id].players[0].connected) {
-                    games[id].players.push(games[id].players.shift())
-                    rollIt()
+            if (games[id].players.find(player => player.connected)) {
+                const rollIt = () => {
+                    if (!games[id].players[0].connected) {
+                        games[id].players.push(games[id].players.shift())
+                        rollIt()
+                    }
                 }
+                rollIt()
             }
-            rollIt()
         }
         socket.emit('games_list', games)
     })
@@ -170,7 +174,7 @@ io.on('connection', (socket) => {
         const getQuestion = () => {
             const randomIndex = Math.floor(Math.random()*10)
             console.log(randomIndex)
-            if (randomIndex === 9) {
+            if (randomIndex === 9 && questionsDrawn.length !== 1) {
                 thisGame.cycle++
                 if (thisGame.cycle === 5) {
                     thisGame.phase = 4
@@ -184,11 +188,14 @@ io.on('connection', (socket) => {
             }
         }    
         getQuestion()
-        thisGame.players.push(thisGame.players.shift())
-
+        if (thisGame.questionsDrawn.length !== 1) {
+            thisGame.players.push(thisGame.players.shift())
+        }
+        let playerCount = thisGame.players.length
         const rollIt = () => {
-            if (!thisGame.players[0].connected) {
+            if (!thisGame.players[0].connected && playerCount > 0) {
                 thisGame.players.push(thisGame.players.shift())
+                playerCount--
                 rollIt()
             }
         }
@@ -220,10 +227,19 @@ io.on('connection', (socket) => {
         io.to(gameID).emit('phase_10')
     })
 
-    socket.on('generate_time', (id) => {
+    socket.on('new_time', (thing) => {
+        console.log(thing)
         const timeLengths = ["Days", "Weeks", "Years", "Decades", "Centuries", "Millenia"]
-        const newTime = timeLengths[Math.floor(Math.random()*6)]
-        io.to(id).emit("time_update", newTime)
+        const generateTime = () => {
+            const newTime = timeLengths[Math.floor(Math.random()*6)]
+            if (!thing.timeLength || newTime !== thing.timeLength) {
+                console.log(newTime)
+                io.to(thing.gameID).emit("get_new_time", newTime)
+            } else {
+                generateTime()
+            }
+        }
+        generateTime()
     })
 
     socket.on('make_room', (data) => {

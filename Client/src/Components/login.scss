@@ -1,0 +1,50 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80vh;
+    padding: 5rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.title {
+    font-size: 3rem;
+}
+
+.inputFormContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 15%;
+    padding: 1rem 6rem;
+    min-height: 25%;
+    border: 2px solid rgb(225, 225, 225);
+    border-radius: 15px;
+}
+
+.usernameInputTitle {
+    margin: 0px 0px 1rem 0px;
+}
+
+.inputForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.usernameInput {
+    padding: 4%;
+    border-radius: 5px;
+}
+
+.connectBtn {
+    align-self: center;
+    width: 33%;
+    margin-top: 3%;
+    padding: 3%;
+    border: none;
+    border-radius: 5px;
+    &:hover {
+         background-color: rgba(0, 0, 0, 0.2);
+    }
+}

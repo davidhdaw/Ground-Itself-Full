@@ -11,6 +11,7 @@ function Nav({game, setGame, socket, setUsernameSelected}) {
     socket.emit('leave_game', game.id)
     //erase local storage gameID
     localStorage.removeItem('gameID')
+    localStorage.removeItem('password')
     setGame({phase: 0})
     navigate("/")
   }
@@ -20,6 +21,7 @@ function Nav({game, setGame, socket, setUsernameSelected}) {
     socket.disconnect()
     localStorage.removeItem('gameID')
     localStorage.removeItem('userID')
+    localStorage.removeItem('password')
     localStorage.removeItem('sessionID')
     setUsernameSelected(false)
     setGame({phase: 0})

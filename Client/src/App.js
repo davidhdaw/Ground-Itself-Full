@@ -6,6 +6,7 @@ import GameArea from './Components/GameArea'
 import Chat from './Components/Chat'
 import io from 'socket.io-client'
 import Login from './Components/login'
+import './App.css'
 
 const socket = io.connect('http://localhost:3001', {autoConnect: false})
 const sessionID = localStorage.getItem("sessionID");
