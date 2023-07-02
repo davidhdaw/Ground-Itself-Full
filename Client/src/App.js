@@ -8,7 +8,12 @@ import io from 'socket.io-client'
 import Login from './Components/login'
 import './App.css'
 
-const socket = io.connect('http://localhost:3001', {autoConnect: false})
+
+// const socket = io.connect('http://localhost:3001', {autoConnect: false})
+const socket = io.connect('https://grounditselfserver.onrender.com', {autoConnect: false})
+
+
+
 const sessionID = localStorage.getItem("sessionID");
 const gameID = localStorage.getItem('gameID');
 

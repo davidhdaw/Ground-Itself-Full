@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const PORT = process.env.PORT || 3001;
 const http = require('http');
 const { Server } = require('socket.io')
 const server = http.createServer(app)
@@ -12,7 +13,7 @@ let completedGames = {}
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000'
+        origin: '*'
     },
 })
 
@@ -263,6 +264,6 @@ io.on('connection', (socket) => {
     })
 })
 
-server.listen(3001, () => {
-    console.log('server is running!')
+server.listen(PORT, () => {
+    console.log('server is running on port: ' + PORT)
 })
