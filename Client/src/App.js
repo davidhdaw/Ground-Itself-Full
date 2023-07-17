@@ -10,7 +10,7 @@ import './App.css'
 
 
 // const socket = io.connect('http://localhost:3001', {autoConnect: false})
-const socket = io.connect('https://grounditselfserver.onrender.com', {autoConnect: false})
+const socket = io.connect('ground-itself-full-production.up.railway.app', {autoConnect: false})
 
 
 
