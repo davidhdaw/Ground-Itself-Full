@@ -46,6 +46,7 @@ function Login({socket, setUsernameSelected}) {
                 <button 
                   className="connectBtn" 
                   onClick={() => validateForm()}
+                  disabled={!username}
                 >
                   Join
                 </button>
