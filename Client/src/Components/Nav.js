@@ -1,7 +1,15 @@
 import './Nav.css'
 import { useNavigate } from 'react-router-dom'
+import CustomButton from './buttons/CustomButton'
+import { useEffect } from 'react'
 
 function Nav({game, setGame, socket, setUsernameSelected}) {
+
+  useEffect(() => {
+    console.log(game.phase);
+  },[game])
+
+
   const navigate = useNavigate()
 
   const disconnectGame = () => {
@@ -29,20 +37,20 @@ function Nav({game, setGame, socket, setUsernameSelected}) {
   }
 
     return (
-      <header className="Nav">
-        <div className="gameInfo">
+      <section className="Nav">
+        <section className="gameInfo">
             {game.location && <p>Game Location: {game.location}</p>}
             {game.playLength && <p>Cycle Length: {game.playLength}</p>}
-            {game.phase && <p>Game Phase: {game.phase}</p>}
+            {game.phase != 0 && <p>Game Phase: {game.phase}</p>}
             {game.phase === 3 && <p>Current Turn: {game.players[0].username}</p>}
             {game.id && <button className='disconnectGame' onClick={disconnectGame}>Exit Game</button>}
-        </div>
-        <div className='userInfo'>
+        </section>
+        <section className='userInfo'>
             <p>How to Play</p>
             <p>User Info</p>
             <button className='disconnectUser' onClick={disconnectUser}>Log Out</button>
-        </div>    
-      </header>
+        </section>    
+      </section>
     );
   }
 
