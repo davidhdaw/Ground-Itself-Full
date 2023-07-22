@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './login.scss'
 
 function Login({socket, setUsernameSelected}) {
 
     const [username, setUsername] = useState('')
+    const [inputClass, setInputClass] = useState("usernameInput")
+
+  useEffect(() => {
+
+  },[])
+
+    const validateForm = () => {
+      if (!username) {
+        console.log("error");
+        setInputClass("usernameInput error")
+      } else {
+        setInputClass("usernameInput")
+        connect()
+      }
+    }
 
     const connect = () => {
         setUsernameSelected(true)
@@ -19,13 +34,20 @@ function Login({socket, setUsernameSelected}) {
               <div className="inputForm">
                 <input
                 type="text"
-                className="usernameInput"
+                className={inputClass}
+                // className="usernameInput"
                 value={username}
                 placeholder="Enter username..."
                 onChange={(e) => setUsername(e.target.value)}
                 ></input>
-                <button className="connectBtn" onClick={connect}>
-                Join
+                <div style={{ height: "20px", width: "350px", margin: "1% 0px" }}>
+                  {inputClass == "usernameInput error" && "* Please enter a username"}
+                </div>
+                <button 
+                  className="connectBtn" 
+                  onClick={() => validateForm()}
+                >
+                  Join
                 </button>
               </div>
             </div>
