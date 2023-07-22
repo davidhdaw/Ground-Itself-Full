@@ -38,6 +38,7 @@ function Nav({game, setGame, socket, setUsernameSelected}) {
 
     return (
       <section className="Nav">
+        <div className="nav-cont">
         <section className="gameInfo">
             {game.location && <p>Game Location: {game.location}</p>}
             {game.playLength && <p>Cycle Length: {game.playLength}</p>}
@@ -50,6 +51,7 @@ function Nav({game, setGame, socket, setUsernameSelected}) {
             <p>User Info</p>
             <button className='disconnectUser' onClick={disconnectUser}>Log Out</button>
         </section>    
+        </div>
       </section>
     );
   }
