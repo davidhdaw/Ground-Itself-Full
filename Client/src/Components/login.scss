@@ -34,17 +34,25 @@
 
 .usernameInput {
     padding: 4%;
+    border: 2px solid black;
     border-radius: 5px;
+}
+
+.error {
+    border: 2px solid red !important; 
 }
 
 .connectBtn {
     align-self: center;
     width: 33%;
-    margin-top: 3%;
     padding: 3%;
     border: none;
     border-radius: 5px;
     &:hover {
          background-color: rgba(0, 0, 0, 0.2);
     }
+}
+
+.error-message {
+    color: red;
 }

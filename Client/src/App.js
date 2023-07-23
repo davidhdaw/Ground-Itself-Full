@@ -7,6 +7,7 @@ import Chat from './Components/Chat'
 import io from 'socket.io-client'
 import Login from './Components/login'
 import './App.css'
+import BaseLayout from './Components/layout/BaseLayout'
 
 
 // const socket = io.connect('http://localhost:3001', {autoConnect: false})
@@ -83,6 +84,7 @@ function App() {
 
   return (
     <div className="App">
+      <BaseLayout>
       <Nav game={game} socket={socket} setGame={setGame} setUsernameSelected={setUsernameSelected} />
       <Routes>
         <Route
@@ -102,8 +104,10 @@ function App() {
         />
       
       </Routes>
+      </BaseLayout>
+
     </div>
   );
   }
 }
-export default App;
+export default App

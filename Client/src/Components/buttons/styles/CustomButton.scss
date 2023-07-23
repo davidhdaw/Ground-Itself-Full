@@ -1,0 +1,20 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  min-width: 200px;
+  height: 50px;
+  font-size: 1.2rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  align-self: center;
+  padding: 1.5%;
+  border: 2px solid gray;
+  border-radius: 5px;
+  &:hover {
+    border: 2px solid black;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
