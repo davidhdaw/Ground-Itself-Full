@@ -270,5 +270,4 @@ io.on('connection', (socket) => {
 
 server.listen(PORT, () => {
     console.log('server is running on port: ' + PORT)
-    catch console.log(catch)
 })
