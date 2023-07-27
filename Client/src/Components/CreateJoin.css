@@ -13,3 +13,7 @@
 
     /* border: 2px solid red; */
 }
+
+.locationError {
+    color:red
+}

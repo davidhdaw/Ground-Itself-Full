@@ -97,15 +97,22 @@ function CreateJoin({ setGame, socket, games }) {
   const [form, setForm] = useState("choosing");
   const [location, setLocation] = useState("");
   const [password, setPassword] = useState("");
+  const [locationError, setLocationError] = useState(false)
 
   const createGame = () => {
-    let newGame = {
-      ...gameTemplate,
-      location: location,
-      password: password,
-      roomCreator: socket.username,
-    };
-    socket.emit("make_room", newGame);
+    if (location !== '') {
+      setLocationError(false)
+      let newGame = {
+        ...gameTemplate,
+        location: location,
+        password: password,
+        roomCreator: socket.username,
+      };
+      socket.emit("make_room", newGame);
+    }
+    else {
+      setLocationError(true)
+    }
   };
 
   const gameCheck = () => {
@@ -174,6 +181,7 @@ function CreateJoin({ setGame, socket, games }) {
             ></input>
           <hr></hr>
           <button onClick={createGame}>Create Game</button>
+          {locationError && <p className='locationError'>Please enter a location to create game.</p>}
         </div>
       )}
       </CustomBox>

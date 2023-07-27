@@ -8,8 +8,12 @@ const cors = require('cors')
 const crypto = require('crypto')
 app.use(cors());
 
+
+
 let games = {}
 let completedGames = {}
+
+//wrap sockets in try blocks.
 
 const io = new Server(server, {
     cors: {
@@ -65,7 +69,7 @@ io.on('connection', (socket) => {
                 const index = games[room].players.findIndex(player => player.userID === socket.userID)
                 games[room].players[index].connected = false
                 const rollIt = () => {
-                    if (!games[room].players[0].connected) {
+                    if (games[room].players.length !== 0 && !games[room].players[0].connected) {
                         games[room].players.push(games[room].players.shift())
                         rollIt()
                     }
@@ -175,7 +179,7 @@ io.on('connection', (socket) => {
         const getQuestion = () => {
             const randomIndex = Math.floor(Math.random()*10)
             console.log(randomIndex)
-            if (randomIndex === 9 && questionsDrawn.length !== 1) {
+            if (randomIndex === 9 && thisGame.questionsDrawn.length !== 1) {
                 thisGame.cycle++
                 if (thisGame.cycle === 5) {
                     thisGame.phase = 4
@@ -266,4 +270,5 @@ io.on('connection', (socket) => {
 
 server.listen(PORT, () => {
     console.log('server is running on port: ' + PORT)
+    catch console.log(catch)
 })

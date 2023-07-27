@@ -13,7 +13,6 @@ function GameArea({game, setGame, socket}) {
   let params = useParams();
 
   const [password, setPassword] = useState('')
-  const [thisGame, setThisGame] = useState({})
 
   const joinGame = () => {
     const joinForm = {
@@ -23,6 +22,12 @@ function GameArea({game, setGame, socket}) {
     } 
     socket.emit('join_game', joinForm)
   }
+
+  //localStorage only has user info.
+  //use effect to try and grab game info. 
+  //If there isn't game info say no such game exists. 
+  //If there is game info and no password auto join the game.
+  //if there is game info and there is a password 
 
   // socket.on('identified_game', (data) => {
   //   console.log(data)
