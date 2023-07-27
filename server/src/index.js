@@ -72,9 +72,8 @@ io.on('connection', (socket) => {
                     if (games[room].players.length !== 0 && !games[room].players[0].connected) {
                         games[room].players.push(games[room].players.shift())
                         rollIt()
-                    }
+                    }   
                 }
-                rollIt()
                 io.to(room).emit("game_update", games[room])
             }
         })
@@ -216,11 +215,11 @@ io.on('connection', (socket) => {
 
     socket.on('end_game', (gameId) => {
         const endingGame = games[gameId]
-        io.to(gameId).emit('reset')
-        io.in(gameId).disconnectSockets()
         endingGame.players.forEach(player => {
             player.connected = false
         })
+        io.to(gameId).emit('reset')
+        io.in(gameId).disconnectSockets()
         completedGames[gameId] = endingGame
         delete games[gameId]
         //game object is put into complete games
