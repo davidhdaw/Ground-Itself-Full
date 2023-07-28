@@ -31,6 +31,7 @@ function Nav({game, setGame, socket, setUsernameSelected}) {
     localStorage.removeItem('userID')
     localStorage.removeItem('password')
     localStorage.removeItem('sessionID')
+    localStorage.removeItem('username')
     setUsernameSelected(false)
     setGame({phase: 0})
     navigate("/")
@@ -48,7 +49,7 @@ function Nav({game, setGame, socket, setUsernameSelected}) {
         </section>
         <section className='userInfo'>
             <p>How to Play</p>
-            <p>User Info</p>
+            <p>{socket.username}</p>
             <button className='disconnectUser' onClick={disconnectUser}>Log Out</button>
         </section>    
         </div>

@@ -56,12 +56,14 @@ function GameArea({game, setGame, socket}) {
   } else {
     return (
       <div className='GameArea'>
-        {game.phase === 1 && <TimeLength game={game} setGame={setGame} socket={socket} />}
-        {game.phase === 2 && <Establishing game={game} socket={socket} />}
-        {game.phase === 3 && !game.tenFlag && !game.focusedFlag && <DrawingCards game={game} socket={socket} />}
-        {game.phase === 3 && game.tenFlag && <TenAlert game={game} socket={socket} />}
-        {game.phase === 3 && game.focusedFlag && <Focused game={game} socket={socket} />}
-        {game.phase === 4 && <EndGame game={game} socket={socket} />}
+        <div className="gamePhases">
+          {game.phase === 1 && <TimeLength game={game} setGame={setGame} socket={socket} />}
+          {game.phase === 2 && <Establishing game={game} socket={socket} />}
+          {game.phase === 3 && !game.tenFlag && !game.focusedFlag && <DrawingCards game={game} socket={socket} />}
+          {game.phase === 3 && game.tenFlag && <TenAlert game={game} socket={socket} />}
+          {game.phase === 3 && game.focusedFlag && <Focused game={game} socket={socket} />}
+          {game.phase === 4 && <EndGame game={game} socket={socket} />}
+        </div>
       </div>
     );
   }

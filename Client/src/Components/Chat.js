@@ -24,6 +24,8 @@ function Chat({socket, game}) {
 
 useEffect(() => {
   socket.on('recieve_message', (data) => {
+    const el = document.querySelector(".chatInput");
+    el.scrollIntoView(true)
   })
 }, [socket])
 
@@ -33,11 +35,13 @@ return (
         <div className="chatLog">
             { game.chat && game.chat.map(message => <ChatBubble message={message} />)}
             <hr></hr>
-            <input type='text' placeholder='new message' value={message} 
-            onChange={e => setMessage(e.target.value)}>
-            </input>
-            <br></br>
-            <button onClick={sendMessage}>Send Message</button>
+            <div className='chatInput'>
+              <input type='text' placeholder='new message' value={message} 
+              onChange={e => setMessage(e.target.value)}>
+              </input>
+              <br></br>
+              <button onClick={sendMessage}>Send Message</button>
+            </div>
         </div>
       </div>
     );

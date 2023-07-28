@@ -1,14 +1,8 @@
-import { useState } from "react";
-
 function TimeLength({game, setGame, socket}) {
-    
-
-    
-    const[timeLength, setTimeLength] = useState('')
     
     const timeRoll = () => {
         const timeObject = {
-          timeLength: timeLength || '',
+          timeLength: game.playLength || '',
           gameID: game.id
         }
         socket.emit('new_time', timeObject)
@@ -16,27 +10,29 @@ function TimeLength({game, setGame, socket}) {
 
     socket.on('get_new_time', (time) => {
         console.log('huh?')
-        setTimeLength(time)
+        const updated = {...game,
+          playLength: time,
+          }
+        socket.emit('update_game', updated)
       }
     )
 
     const timeConfirmation = () => {
         const updated = {...game,
-        playLength: timeLength,
         phase: 2
         }
         socket.emit('update_game', updated)
     }
 
     return (
-      <div className='GameArea'>
+      <div className='timeArea'>
         <p>This game is played in 4 cycles, and each cycle is separated by
         a gap in time. These gaps are determined randomly and may range in size from
         days, which might lend itself to an intimate and close-textured story, to millennia, 
         where what was here may not survive these jumps in recognizable ways. </p>
-        {!timeLength && <button onClick={timeRoll}>Find Cycle Length</button>}
-        <h1>{timeLength}</h1>
-        {timeLength && 
+        {!game.playLength && <button onClick={timeRoll}>Find Cycle Length</button>}
+        <h1>{game.playLength}</h1>
+        {game.playLength && 
         <div className="confirmLength">
             <p>If the collective group feels that the given timeline is
             antagonistic to the story that you would like to tell, you may

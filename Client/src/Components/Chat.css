@@ -21,10 +21,13 @@
 }
 
 .chatLog {
+    display: flex;
+    flex-direction: column;
     background-color: #ffffff;
     width: 280px;
     height: 92vh;
     border: 1px solid black;
+    overflow-y: auto;
 }
 
 .chatToggle {
