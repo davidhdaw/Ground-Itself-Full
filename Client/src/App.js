@@ -10,8 +10,8 @@ import './App.css'
 import BaseLayout from './Components/layout/BaseLayout'
 
 
-const socket = io.connect('http://localhost:3001', {autoConnect: false})
-// const socket = io.connect('ground-itself-full-production.up.railway.app', {autoConnect: false})
+// const socket = io.connect('http://localhost:3001', {autoConnect: false})
+const socket = io.connect('ground-itself-full-production.up.railway.app', {autoConnect: false})
 
 
 
