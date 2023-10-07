@@ -1,9 +1,10 @@
-import './GameArea.css'
+import './GameArea.scss'
 import React, {useState, useEffect} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import TimeLength from './TimeLength';
 import Establishing from './Establishing';
 import DrawingCards from './DrawingCards';
+import WaitingRoom from './WaitingRoom';
 import TenAlert from './TenAlert';
 import Focused from './Focused';
 import EndGame from './EndGame';
@@ -12,50 +13,40 @@ function GameArea({game, setGame, socket}) {
 
   let params = useParams();
 
-  const [password, setPassword] = useState('')
+  const [gameJoinError, setGameJoinError] = useState(false)
 
   const joinGame = () => {
-    const joinForm = {
-      id: params.id,
-      username: socket.username,
-      password: password
-    } 
-    socket.emit('join_game', joinForm)
+    socket.emit('join_game', params.id)
   }
 
-  //localStorage only has user info.
-  //use effect to try and grab game info. 
-  //If there isn't game info say no such game exists. 
-  //If there is game info and no password auto join the game.
-  //if there is game info and there is a password 
-
-  // socket.on('identified_game', (data) => {
-  //   console.log(data)
-  //   setThisGame(data)
-  // })
+  useEffect(() => {
+        socket.emit('find_game', params.id)
+  }, [])
 
   socket.on('game_update', (data) => {
       setGame(data)
-      console.log(data)
     })
 
 
   if ( !game || !game.id || game.id !== params.id) {
+    socket.emit('find_game', params.id)
     return (
-          <div className='JoinForm'>
-            <p>Game Password (Can Be Left Blank):</p>
-            <input type='text' 
-            className='passwordInput' 
-            value={password} 
-            onChange={e => setPassword(e.target.value)}
-            ></input>
-            <hr></hr>
-            <button onClick={joinGame}>Join Game</button>
-        </div>
+          <h1>Game Not Found</h1>
     );
+  } else if (gameJoinError) {
+    return (
+      <h1>Selected game cannot be joined.</h1>
+    )
+  } else if (game.id && game.players.findIndex(player => player.userID === socket.userID) === -1) {
+    joinGame()
   } else {
+    let playerIndex = game.players.findIndex(player => player.userID === socket.userID)
+    if (!game.players[playerIndex].connected) {
+      socket.emit('reconnect', params.id)
+    }
     return (
       <div className='GameArea'>
+        {game.phase === 0 && <WaitingRoom game={game} socket={socket} />}
         {game.phase === 1 && <TimeLength game={game} setGame={setGame} socket={socket} />}
         {game.phase === 2 && <Establishing game={game} socket={socket} />}
         {game.phase === 3 && !game.tenFlag && !game.focusedFlag && <DrawingCards game={game} socket={socket} />}

@@ -1,4 +1,4 @@
-import "./CreateJoin.css";
+import "./CreateJoin.scss";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GameList from "./GameList";
@@ -11,12 +11,28 @@ function CreateJoin({ setGame, socket, games }) {
   const navigate = useNavigate();
   const params = useParams();
 
+  const initialLocations = [
+    'Hollywood Forever Cemetery',
+    'New York City Subway',
+    'The White House',
+    'The Great Barrier Reef',
+    'The sea of tranquility',
+    'The Great Wall of China',
+    'Cincinnati, Ohio',
+    'The Grand Canyon',
+    'The Eiffel Tower',
+    'A field outside of Austin, Texas',
+    'Beverly Hills, California',
+    'The Amazon Rainforest',
+    'The Great Pyramid of Giza',
+    'The Grand Ol Oprey',
+  ]
+
   const gameTemplate = {
     location: "",
-    password: "",
     roomCreator: "",
     playLength: "",
-    phase: 1,
+    phase: 0,
     establishingOptions: [
       "What was this place in the past? How long ago was that?",
       "What was the greatest moment in this place's history? (An innovation? A discovery? A revolution? A new sapling? The emergence of a cycle of cicadas?)",
@@ -32,6 +48,7 @@ function CreateJoin({ setGame, socket, games }) {
       "If there are multiple people who live here, what are they divided on? What are the points of contention that are fought over? -OR- If there are not multiple people, what resources do the plants, animals, or visitors to our place vie for?",
     ],
     establishingDrawn: [],
+    selectedTens: [],
     questions: [
       [
         "What re the plants like in our place? The rocks? The Soil?",
@@ -95,29 +112,26 @@ function CreateJoin({ setGame, socket, games }) {
   };
 
   const [form, setForm] = useState("choosing");
-  const [location, setLocation] = useState("");
-  const [password, setPassword] = useState("");
-  const [locationError, setLocationError] = useState(false)
+  const [codeError, setCodeError] = useState("");
+  const [gameID, setGameID] = useState('');
 
   const createGame = () => {
-    if (location !== '') {
-      setLocationError(false)
+    const randomLocation = initialLocations[Math.floor(Math.random()*(initialLocations.length))]
       let newGame = {
         ...gameTemplate,
-        location: location,
-        password: password,
+        location: randomLocation,
         roomCreator: socket.username,
       };
+      console.log(newGame)
       socket.emit("make_room", newGame);
     }
-    else {
-      setLocationError(true)
-    }
-  };
 
-  const gameCheck = () => {
-    socket.emit("game_check");
-    setForm("join");
+  const goToGame = () => {
+    if (gameID !== "") {
+      navigate("/" + gameID);
+    } else {
+      setCodeError(true)
+    }
   };
 
   socket.on("game_update", (data) => {
@@ -128,65 +142,33 @@ function CreateJoin({ setGame, socket, games }) {
     }
   });
 
+//field for gameID
+//join game button that lets you join games still in waiting room or lets you rejoin game in progress
+//create game button that sends you to waiting room to choose game location
+
   return (
-    <section className="CreateJoin">
-
+    <section className="CreateJoin GameArea">
       <CustomBox>
-      {form === "choosing" && (
         <div className="choosingForm">
-          {Object.keys(games).length !== 0 && (
-            <CustomButton title="Join Existing Game" onClick={gameCheck} />
-          )}
-          <CustomButton title="Create New Game" onClick={() => setForm("create")} />
+        <button className='createButton' onClick={createGame}>
+          Create New Game
+        </button>
+              <p className="codeInstruction">Or</p>
+              <p className='codeInstruction'>enter an existing game code below:</p>
+                      <input type='text' 
+            className='codeInput'
+            value={gameID} 
+            placeholder="Enter game code..."
+            onChange={e => setGameID(e.target.value)}
+            ></input>
+            <br></br>
+          <button className="joinButton" onClick={goToGame}>
+            Join Existing Game
+          </button>
+          {codeError && <p className="errorMessage">Please enter a game code</p>}
         </div>
-      )}
-      {form === "join" && <GameList games={games} setForm={setForm} />}
-      {/* {form === 'joinroom' &&
-        <div className='joinform'>
-            <p>Enter Game Location:</p>
-            <input type='text' 
-            className='locationInput' 
-            value={location} 
-            onChange={e => setLocation(e.target.value)}
-            ></input>
-            <p>Game Password (Can Be Left Blank):</p>
-            <input type='text' 
-            className='passwordInput' 
-            value={password} 
-            onChange={e => setPassword(e.target.value)}
-            ></input>
-            <hr></hr>
-            <button onClick={createGame}>Create Game</button>
-
-
-        </div>
-
-        } */}
-
-      {form === "create" && (
-        <div className="createForm">
-          <p>Enter Game Location:</p>
-          <input
-            type="text"
-            className="locationInput"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            ></input>
-          <p>Game Password (Can Be Left Blank):</p>
-          <input
-            type="text"
-            className="passwordInput"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            ></input>
-          <hr></hr>
-          <button onClick={createGame}>Create Game</button>
-          {locationError && <p className='locationError'>Please enter a location to create game.</p>}
-        </div>
-      )}
       </CustomBox>
     </section>
   );
-}
-
+};
 export default CreateJoin

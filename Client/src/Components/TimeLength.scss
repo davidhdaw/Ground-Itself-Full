@@ -1,0 +1,29 @@
+.timeLength {
+    width: 80%;
+    max-width: 1440px;
+    font-family: 'Merriweather', serif;
+    font-size: 1.2rem;
+}
+
+.working {
+    color: red
+}
+
+.rollLengthBtn, .confirmLengthBtn {
+    background-color: black;
+    color: white;
+    align-self: center;
+    padding: 10px 20px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: in;
+}
+
+.btnSeperater {
+    margin: 0 1rem;
+    height: 2rem;
+    border: 1px solid grey;
+}

@@ -1,0 +1,74 @@
+.HowToPlay {
+    position: absolute;
+    top: 5%;
+    left: 15%;
+    z-index: 100;
+    width: 70%;
+    min-height:70vh;
+    background-color: white;
+    display: flex;
+    font-family: 'Merriweather', serif;
+    font-size: 1.2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #e6e6e6;
+    opacity: 100%;
+}
+
+.introduction {
+    width: 90%;
+    text-align: left;
+    padding-bottom: 1rem;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.introHeading {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.introText {
+    margin: 1rem 0rem;
+    font-size: 1.1rem;
+}
+
+.phasesContainer {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1rem;
+    width: 90%;
+}
+
+.phaseName {
+    font-size: 1.8rem;
+    margin: .5rem 0;
+    padding: 0 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+.phaseDescription {
+    margin-left: 0;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.creditSection {
+    margin-top: 2rem;
+}
+
+.credits {
+    font-size: 0.8rem;
+    margin: 0.3rem 0;
+}

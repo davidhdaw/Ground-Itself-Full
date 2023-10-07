@@ -1,0 +1,62 @@
+.waitingRoom {
+    font-family: 'Merriweather', serif;
+    font-size: 1.1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+}
+
+.locationInput {
+    margin-top: 1rem;
+    font-family: 'Merriweather', serif;
+    font-size: 2.2rem;
+    text-align: center;
+}
+
+.playerConfirm, .startConfirm {
+    background-color: black;
+    color: white;
+    align-self: center;
+    padding: 10px 20px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.confirmationArea {
+    display: flex;
+    flex-direction: column;
+    min-width: 15%;
+    padding: 1rem 6rem;
+    max-width: 40%;
+    max-height: 50%;
+    border: 2px solid rgb(225, 225, 225);
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.openingSpan {
+    border-right: 2px solid rgb(225, 225, 225);
+    min-width: 2rem;
+}
+
+.gameCode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgb(225, 225, 225);
+    border-radius: 15px;
+}
+
+.closingSpan {
+    border-left: 2px solid rgb(225, 225, 225);
+    margin-left: 1rem;
+    min-width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

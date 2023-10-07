@@ -1,0 +1,47 @@
+.CreateJoin {
+    // min-width: 100%;
+    // min-height: 100vh;
+    // background: linear-gradient(180deg, #FFFFFF 44.8%, rgba(255, 255, 255, 0) 78.81%), url('../images/mountains.jpg');
+    // background-repeat: no-repeat;
+    // background-size: 100% 130%;
+    font-family: 'Merriweather', serif;
+}
+
+.errorMessage {
+    color:red
+}
+
+.codeInstruction {
+    margin-bottom: 1rem;
+}
+
+.codeInput {
+    text-align: center;
+    padding: 4%;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 1.5em;
+}
+
+.choosingForm {
+    margin-top: 10em;
+    display: flex;
+    flex-direction: column;
+    min-width: 15%;
+    padding: 1rem 6rem;
+    border: 2px solid rgb(225, 225, 225);
+    border-radius: 15px;
+}
+
+.createButton, .joinButton {
+    background-color: black;
+    color: white;
+    align-self: center;
+    width: 75%;
+    padding: 3%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 1rem;
+}

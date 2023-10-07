@@ -1,0 +1,56 @@
+.Focused {
+    width: 75%;
+    display: flex;
+    font-family: 'Merriweather', serif;
+    font-size: 1.2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #e6e6e6;
+}
+
+.focusedHeading {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.focusedText {
+    margin: 0px 0px;
+    font-size: 1.1rem;
+}
+
+.focusedExplanation {
+    width: 95%;
+    text-align: left;
+    border-bottom: 1px solid black;
+    padding-bottom: 2rem;
+}
+
+.situationList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 95%;
+}
+
+.situationContainer {
+
+    max-width:45%;
+    text-align: left;
+}
+
+.dummy {
+    min-width: 45%
+}
+
+.situationName {
+    font-weight: 700;
+    font-size: .9rem;
+}
+
+.situationDescription {
+    font-weight: 400;
+    font-size: .8rem;
+    margin: 0px 0px;
+}

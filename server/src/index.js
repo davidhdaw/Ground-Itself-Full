@@ -21,7 +21,7 @@ const io = new Server(server, {
     },
 })
 
-const randomId = () => crypto.randomBytes(8).toString('hex')
+const randomId = () => crypto.randomBytes(6).toString('hex')
 const { InMemorySessionStore } = require('./sessionStore')
 const sessionStore = new InMemorySessionStore();
 
@@ -79,28 +79,28 @@ io.on('connection', (socket) => {
         })
     })
 
-    socket.on('join_game', (joinForm) => {
-      const gameToJoin = games[joinForm.id]
+    socket.on('join_game', (id) => {
+      const gameToJoin = games[id]
       const index = gameToJoin.players.findIndex(player => player.userID === socket.userID)
       console.log(index)
-      if (!games[joinForm.id]) {
+      if (!games[id]) {
         return new Error("no matching game")
       }
-      if (games[joinForm.id] && joinForm.password === gameToJoin.password) {
-        socket.join(joinForm.id)
-        if (index === -1) {
-            const playerObject = {
+      if (games[id].phase === 0 && index === -1) {
+        socket.join(id)
+        const playerObject = {
                 connected: true,
                 userID: socket.userID,
-                username: socket.username
+                username: socket.username,
+                confirmLocation: false
             }
-            games[joinForm.id].players.push(playerObject)
+        games[id].players.push(playerObject)
+        io.to(id).emit("game_update", gameToJoin)
         } else if(gameToJoin.players[index].connected === false) {
-            console.log('firing?')
             gameToJoin.players[index].connected = true
+            io.to(id).emit("game_update", gameToJoin)
         }
-        io.to(joinForm.id).emit("game_update", gameToJoin)
-      } else {
+      else {
         return new Error("password match")
       }
     })
@@ -108,8 +108,27 @@ io.on('connection', (socket) => {
 
     socket.on('find_game', (id) => {
         const game = games[id]
-        if (game) {
+
+        if (!game) {
+            socket.emit('reset')
+        }
+
+        const index = game.players.findIndex(player => player.userID === socket.userID)
+        if (game && index !== -1 && game.players[index].connected === true) {
             socket.emit('game_update', game)
+        } else if (game && index !== -1 && game.players[index].connected === false) {
+            games[id].players[index].connected = true
+            io.to(id).emit("game_update", games[id])
+        } else if (game.phase === 0 && index === -1) {
+            socket.join(id)
+            const playerObject = {
+                    connected: true,
+                    userID: socket.userID,
+                    username: socket.username,
+                    confirmLocation: false
+                }
+            games[id].players.push(playerObject)
+            io.to(id).emit("game_update", games[id])
         }
     })
 
@@ -120,10 +139,24 @@ io.on('connection', (socket) => {
         }
         games[data.id].chat.push(messageObject)
         io.to(data.id).emit("game_update", games[id])
+        io.to(data.id).emit("recieve_message")
     })
 
     socket.on('game_check', () => {
        socket.emit('games_list', games)
+    })
+
+    socket.on('update_location', (id, newLocation) => {
+    games[id].location = newLocation
+    games[id].players.forEach(player => player.confirmLocation = false)
+      io.to(id).emit('game_update', games[id])
+    })
+
+    socket.on('confirm_location', (id) => {
+        const index = games[id].players.findIndex(player => player.userID === socket.userID)
+        games[id].players[index].confirmLocation = !games[id].players[index].confirmLocation
+        console.log(games[id].players[index].confirmLocation)
+        io.to(id).emit('game_update', games[id])
     })
 
 
@@ -178,19 +211,20 @@ io.on('connection', (socket) => {
         const getQuestion = () => {
             const randomIndex = Math.floor(Math.random()*10)
             console.log(randomIndex)
-            if (randomIndex === 9 && thisGame.questionsDrawn.length !== 1) {
+            if ((randomIndex === 9) && (thisGame.questionsDrawn.length > 2)) {
                 thisGame.cycle++
                 if (thisGame.cycle === 5) {
                     thisGame.phase = 4
                 }
                 thisGame.roll = Math.ceil(Math.random()*6)
                 thisGame.tenFlag = true
-            } else if (thisGame.questions[randomIndex].length !== 0) {
+            } else if ((randomIndex !== 9) && (thisGame.questions[randomIndex].length !== 0)) {
                 thisGame.questionsDrawn.push(thisGame.questions[randomIndex].shift())
             } else {
                 getQuestion()
+             }
             }
-        }    
+
         getQuestion()
         if (thisGame.questionsDrawn.length !== 1) {
             thisGame.players.push(thisGame.players.shift())
@@ -205,12 +239,17 @@ io.on('connection', (socket) => {
         }
         rollIt()
         games[id] = thisGame
-        io.to(thisGame.id).emit('game_update', thisGame)
+        io.to(id).emit('game_update', thisGame)
     })
 
     socket.on('update_game', (gameObject) => {
-        games[id] = gameObject
+        games[gameObject.id] = gameObject
         io.to(gameObject.id).emit('game_update', gameObject)
+    })
+
+    socket.on('start_game', (id) => {
+        games[id].phase = 1
+        io.to(id).emit('game_update', games[id])
     })
 
     socket.on('end_game', (gameId) => {
@@ -227,8 +266,10 @@ io.on('connection', (socket) => {
 
     })
 
-    socket.on('10_phase', (gameID) => {
-        io.to(gameID).emit('phase_10')
+    socket.on('10_phase', (gameObject) => {
+        games[gameObject.id] = gameObject
+        io.to(gameObject.id).emit('game_update', gameObject)
+        io.to(gameObject.id).emit('phase_10')
     })
 
     socket.on('new_time', (thing) => {
@@ -247,7 +288,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('make_room', (data) => {
-        id = crypto.randomUUID()
+        id = randomId()
         socket.join(id)
         data.id = id
         socket.username = data.roomCreator
@@ -255,14 +296,11 @@ io.on('connection', (socket) => {
         const playerObject = {
             connected: true,
             userID: socket.userID,
-            username: socket.username
+            username: socket.username,
+            confirmLocation: false
         }
         data.players.push(playerObject)
         games[id] = data
-        socket.emit('store_game', {
-            gameID: id,
-            password: data.password
-        } )
         io.to(id).emit("game_update", games[id])
     })
 })

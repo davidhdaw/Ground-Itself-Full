@@ -1,0 +1,27 @@
+.chatBubble {
+    display: flex;
+    border: solid 2px black;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 5vh;
+    margin: 1rem .3rem;
+}
+
+.chatSender {
+    font-weight: 700;
+    font-size: .75rem;
+}
+
+.chatMessage {
+    text-align: left;
+    padding-left: .8rem;
+    font-size: .8rem;
+    padding-bottom: .5rem;
+}
+
+.nameContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

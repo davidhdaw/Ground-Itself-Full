@@ -1,0 +1,75 @@
+.Chat {
+    display: flex;
+    position: fixed;
+    top: 8vh;
+    right: -280px;
+    height: 92wh;
+    width: 300px;
+    transition: 0.5s ease-in-out;
+    overflow-x: scroll;
+}
+
+.openBtn {
+    height: 1.5rem;
+}
+
+.chatScroll {
+    height: 100%;
+    overflow: scroll;
+}
+
+.openChat {
+    display: flex;
+    position: fixed;
+    top: 8vh;
+    right: 0px;
+    height: 92wh;
+    width: 300px;
+    transition: 0.5s ease-in-out;
+    overflow-x: scroll;
+}
+
+.chatLog {
+    background-color: #ffffff;
+    width: 280px;
+    height: 92vh;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.messageForm {
+    justify-self: flex-end;
+    height: 8vh;
+}
+
+.messageInputContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.chatToggle {
+    width: 20px;
+    height: max-content;
+    align-self: flex-start;
+}
+
+.sendMessageButton {
+ height: 2rem;
+ border-radius: 0;
+ background-color: black;
+ border: 1px solid black;
+ color: white;
+}
+
+.messageField {
+    height: 30px;
+    width: 100%;
+    border-radius: 0;
+    border: 1px solid black;
+    padding: 0;
+}

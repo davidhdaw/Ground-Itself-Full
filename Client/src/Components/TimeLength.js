@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './TimeLength.scss'
 
 function TimeLength({game, setGame, socket}) {
     
@@ -29,12 +30,12 @@ function TimeLength({game, setGame, socket}) {
     }
 
     return (
-      <div className='GameArea'>
+      <div className='timeLength'>
         <p>This game is played in 4 cycles, and each cycle is separated by
         a gap in time. These gaps are determined randomly and may range in size from
         days, which might lend itself to an intimate and close-textured story, to millennia, 
         where what was here may not survive these jumps in recognizable ways. </p>
-        {!timeLength && <button onClick={timeRoll}>Find Cycle Length</button>}
+        {!timeLength && <button className='rollLengthBtn' onClick={timeRoll}>Find Cycle Length</button>}
         <h1>{timeLength}</h1>
         {timeLength && 
         <div className="confirmLength">
@@ -47,7 +48,8 @@ function TimeLength({game, setGame, socket}) {
             glance about the movements of empire may narrow, instead
             focusing on one late-summer week, in a golden city that knows
             things are changing soon.</p>
-            <button className="rerollLengthBtn" onClick={timeRoll}>New Cycle Length</button>
+            <button className="rollLengthBtn" onClick={timeRoll}>New Cycle Length</button>
+            <span className='btnSeperater'></span>
             <button className="confirmLengthBtn" onClick={timeConfirmation}>Confirm Cycle Length</button>
         </div>}
 

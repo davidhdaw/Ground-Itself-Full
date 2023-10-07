@@ -1,0 +1,98 @@
+.TenQuestions, .TenAlert {
+    width: 75%;
+    display: flex;
+    font-family: 'Merriweather', serif;
+    font-size: 1.2rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #e6e6e6;
+}
+
+.tenHeading {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.tenText {
+    margin: 1rem 0rem;
+    font-size: 1.1rem;
+}
+
+.tenQuestionText {
+    margin-left: 0;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.reconvene {
+    width: 90%;
+}
+
+.tenQuestionContainer {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 2rem;
+    width: 95%;
+}
+
+.tenQuestion {
+    font-size: 1.8rem;
+    margin: .5rem 0;
+    padding: 0 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+.tenExplanation {
+    width: 95%;
+    text-align: left;
+    border-bottom: 1px solid black;
+    padding-bottom: 2rem;
+}
+
+.tenOptions {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-bottom: 2rem;
+}
+
+.tenOption {
+    font-size: 1.4rem;
+    padding: 1rem 0rem;
+    text-align: left;
+    border-radius: 15px;
+}
+
+.selectedOption {
+    opacity: 0.4;
+    font-size: 1.4rem;
+    padding: 1rem 0rem;
+    text-align: left;
+    border-radius: 15px;
+    text-decoration: line-through;
+}
+
+.tenOption:hover {
+    background-color: #e6e6e6;
+}
+
+.tenError {
+    color: rgb(71, 11, 11);
+    font-size: 1.4rem;
+    padding: 1rem 0rem;
+    font-weight: 700;
+}
+
+.newLength {
+    font-size: 1.4rem;
+    padding: 1rem 0rem;
+    font-weight: 700;
+    padding-bottom: 2rem;
+}

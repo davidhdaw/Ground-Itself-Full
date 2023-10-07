@@ -10,8 +10,8 @@ import './App.css'
 import BaseLayout from './Components/layout/BaseLayout'
 
 
-// const socket = io.connect('http://localhost:3001', {autoConnect: false})
-const socket = io.connect('ground-itself-full-production.up.railway.app', {autoConnect: false})
+const socket = io.connect('http://localhost:3001', {autoConnect: false})
+// const socket = io.connect('ground-itself-full-production.up.railway.app', {autoConnect: false})
 
 
 
@@ -29,15 +29,9 @@ function App() {
   })
 
   socket.on('reset', () => {
-    localStorage.removeItem('gameID')
     setGame({phase: 0})
     navigate("/")
   })
-
-  socket.on('store_game', ({gameID, password}) => {
-    localStorage.setItem('gameID', gameID)
-    localStorage.setItem('password', password)
-  });
 
   socket.on("session", ({ sessionID, userID, username }) => {
     socket.auth = { sessionID };
@@ -45,7 +39,6 @@ function App() {
     localStorage.setItem('userID', userID)
     socket.userID = userID;
     socket.username = username;
-    console.log(socket.username)
   });
 
 
@@ -55,11 +48,6 @@ function App() {
       setUsernameSelected(true);
       socket.auth = { sessionID };
       socket.connect();
-
-      if (gameID) {
-        socket.emit('find_game', gameID)
-        socket.emit('reconnect', gameID)
-      }
     }
 
   }, [])

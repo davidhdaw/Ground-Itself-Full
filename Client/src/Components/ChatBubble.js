@@ -1,8 +1,14 @@
+import './ChatBubble.scss'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 function ChatBubble({message}) {
     return (
       <div className='chatBubble'>
-        <h3>{message.user}</h3>
-        <p>{message.message}</p>
+        <div className='nameContainer'>
+        <AccountCircleIcon color='disabled' />
+        <h3 className='chatSender'>{message.user}</h3>
+        </div>
+        <p className='chatMessage'>{message.message}</p>
       </div>
     );
   }
